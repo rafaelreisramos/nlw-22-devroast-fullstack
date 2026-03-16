@@ -41,3 +41,13 @@ Os componentes foram criados por padrão usando forwardRef. Elimine o uso do for
 2. Atualize o components/ui/AGENTS.md com os padrões de projeto dos componentes. Mantenha esse arquivo conciso.
 3. Crie e/ou atualize o README.md do projeto falando sobre suas funcionalidades. Não utilize uma linguagem muito técnica já que irá servir como o README do nosso github para que quiser conhecer nosso app.
 4. Faça o commit usando conventional commit pattern.
+
+---
+Agora vamos construir a funcionalidade de editor com syntax highlighting. Esse editor precisa funcionar de uma forma que, quando o usuário colar um trecho de código, as cores (syntax highlighting) sejam applicadas de acordo com a linguagem que deve ser descoberta automaticamente. Podemos também ter uma opção do usuário selecionar a linguagem do código através de uma seleção manual da linguagem no editor da homepage. Deve ser criado um componente, mas que não faz parte da ui, somente deve ser colocado na pasta src/components chamado code-editor.
+
+Quero que você faça uma uma pesquisa das melhores opções para construção deste editor. Eu gosto muito do editor do ray-so (https://github.com/raycast/ray-so). Você pode vasculhar o código para ver como o editor é feito mas pode sugerir outras opções caso faça sentido.
+
+Não quero que você implemente NADA, apenas crie um arquivo em markdown dentro da pasta specs, na raiz do projeto, com a conclusão dos estudos e a especificação para a implementação desta feature.
+
+Crie to-dos dentro deste arquivo e mefaça perguntas, caso necessário, para compreender esta tarefa melhor.
+---
