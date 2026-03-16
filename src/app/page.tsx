@@ -1,5 +1,5 @@
+import { CodeEditor } from "@/components/code-editor";
 import { Button } from "@/components/ui/button";
-import { CodeBlock } from "@/components/ui/code-block";
 import {
 	LeaderboardRow,
 	LeaderboardRowCode,
@@ -29,7 +29,7 @@ export default function Home() {
 				</div>
 
 				{/* Code Input Area */}
-				<CodeBlock
+				<CodeEditor
 					code={`function calculateTotal(items) {
   var total = 0;
   for (var i = 0; i < items.length; i++) {
@@ -46,7 +46,7 @@ export default function Home() {
 
   return total;
 }`}
-					language="javascript"
+					showLanguageSelector
 				/>
 
 				{/* Actions Bar */}
