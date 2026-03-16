@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DevRoast
 
-## Getting Started
+> paste your code. get roasted.
 
-First, run the development server:
+A plataforma onde você cola seu código e recebe avaliações — honestas e sem comprometer.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## O que é o DevRoast?
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+DevRoast é uma aplicação divertida e útil para desenvolvedores que querem:
+- **Avaliar seu código** de forma automática
+- **Ver como seu código fica排名** no ranking dos piores códigos da internet
+- **Aprender com os erros** dos outros e melhorar suas habilidades
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Funcionalidades
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Cole e Avalie
+Cole seu código JavaScript, TypeScript, Python ou outra linguagem e receba uma pontuação de 0 a 10.
 
-## Learn More
+### Sistema de Pontuação
+- **0-3**: Código muito ruim (precisa de ajuda urgente)
+- **4-6**: Código com problemas sérios
+- **7-8**: Precisa de melhorias
+- **9-10**: Código aceitável
 
-To learn more about Next.js, take a look at the following resources:
+### Leaderboard
+Veja o ranking dos piores códigos enviados pela comunidade. Será que o seu código está entre os piores?
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Análise Detalhada
+Receba feedback sobre os problemas encontrados no seu código com exemplos de como melhorar.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Tecnologias
 
-## Deploy on Vercel
+- **Next.js** - Framework React moderno
+- **React 19** - Biblioteca de interface
+- **Tailwind CSS** - Estilização
+- **Shiki** - Syntax highlighting
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Como Usar
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Acesse a aplicação
+2. Cole seu código na área de texto
+3. Clique em "Roast My Code"
+4. Veja sua pontuação e feedback!
+
+## Contribuindo
+
+Quer contribuir com o projeto? Sinta-se livre para abrir issues e pull requests no GitHub.
+
+## License
+
+MIT
