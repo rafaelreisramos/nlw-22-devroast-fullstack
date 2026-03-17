@@ -1,8 +1,8 @@
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 import { tv } from "tailwind-variants";
 
 const badgeVariants = tv({
-	base: "inline-flex items-center gap-2 font-mono text-xs font-normal",
+	base: "inline-flex items-center gap-2 font-mono text-xs font-medium",
 	variants: {
 		variant: {
 			critical: "text-accent-red",
@@ -16,14 +16,35 @@ const badgeVariants = tv({
 	},
 });
 
+const dotVariants = tv({
+	base: "h-2 w-2 rounded-full",
+	variants: {
+		variant: {
+			critical: "bg-accent-red",
+			warning: "bg-accent-amber",
+			good: "bg-accent-green",
+			verdict: "bg-accent-red",
+		},
+	},
+	defaultVariants: {
+		variant: "good",
+	},
+});
+
 type BadgeVariant = "critical" | "warning" | "good" | "verdict";
 
 export interface BadgeProps extends HTMLAttributes<HTMLDivElement> {
 	variant?: BadgeVariant;
+	children?: ReactNode;
 }
 
-function Badge({ className, variant, ...props }: BadgeProps) {
-	return <div className={badgeVariants({ variant, className })} {...props} />;
+function Badge({ className, variant, children, ...props }: BadgeProps) {
+	return (
+		<div className={badgeVariants({ variant, className })} {...props}>
+			<div className={dotVariants({ variant })} />
+			{children}
+		</div>
+	);
 }
 
 Badge.displayName = "Badge";

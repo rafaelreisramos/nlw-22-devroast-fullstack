@@ -94,6 +94,22 @@ Caso seja necessário refatorar o componente CodeBlock, para separar o cabeçalh
 
 ---
 
-Vamos limitar a quantidade de código inserida no nosso editor. Defina um limite de 2000 caracteres para um snippet de cógido e mostre este limite no canto inferior direito do editor. Caso o código passe deste limite desabilite o botão de enviar o código.
+Vamos limitar a quantidade de código inserida no nosso editor. 
+
+Defina um limite de 2000 caracteres para um snippet de cógido e mostre este limite no canto inferior direito do editor. 
+
+Caso o código passe deste limite desabilite o botão de enviar o código.
+
+---
+
+Implemente a página de Roast Results selecionada no app desktop do Pencil (use o macp do Pencil).
+
+Essa página deve receber uma parâmetro dinâmico na url, um id da submissao do tipo uuid, mas, por enquanto, os dados devem permanecer estáticos.
+
+---
+
+Em varias partes do layout nós temos um título de seção que repete a formatação e o layout, como, por exemplo, //shame_leaderboard, //detailed_analysis, //your_submission, //suggested_fix além das próprias seções da página de componentes como //buttons, //toggle, ... 
+
+Crie um componente chamado session-title e aplique ele nas páginas conforme o layout do app desktop do pencil (use o mcp do pencil)
 
 ---

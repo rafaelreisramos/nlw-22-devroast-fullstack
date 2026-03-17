@@ -10,6 +10,7 @@ import {
 	LeaderboardRowScore,
 } from "@/components/ui/leaderboard-row";
 import { ScoreRing } from "@/components/ui/score-ring";
+import { SectionTitle } from "@/components/ui/section-title";
 import { ButtonsDemo } from "./buttons-demo";
 import { ToggleDemo } from "./toggle-demo";
 
@@ -37,36 +38,21 @@ export default function ComponentsPage() {
 
 			<div className="space-y-16 max-w-4xl">
 				<section>
-					<h2 className="mb-4 font-mono text-xl font-semibold text-accent-green">
-						{/* buttons */}
-					</h2>
+					<SectionTitle className="mb-4 text-xl">buttons</SectionTitle>
 					<ButtonsDemo />
 				</section>
 
 				<section>
-					<h2 className="mb-4 font-mono text-xl font-semibold text-accent-green">
-						{/* toggle */}
-					</h2>
+					<SectionTitle className="mb-4 text-xl">toggle</SectionTitle>
 					<ToggleDemo />
 				</section>
 
 				<section>
-					<h2 className="mb-4 font-mono text-xl font-semibold text-accent-green">
-						{/* badge_status */}
-					</h2>
+					<SectionTitle className="mb-4 text-xl">badge_status</SectionTitle>
 
 					<div className="flex flex-wrap gap-6">
 						{badgeVariantsList.map((item) => (
 							<Badge key={item.variant} variant={item.variant as never}>
-								<span
-									className={`h-2 w-2 rounded-full ${
-										item.variant === "critical" || item.variant === "verdict"
-											? "bg-accent-red"
-											: item.variant === "warning"
-												? "bg-accent-amber"
-												: "bg-accent-green"
-									}`}
-								/>
 								{item.label}
 							</Badge>
 						))}
@@ -74,15 +60,10 @@ export default function ComponentsPage() {
 				</section>
 
 				<section>
-					<h2 className="mb-4 font-mono text-xl font-semibold text-accent-green">
-						{/* cards */}
-					</h2>
+					<SectionTitle className="mb-4 text-xl">cards</SectionTitle>
 
 					<Card className="max-w-lg">
-						<Badge variant="critical">
-							<span className="h-2 w-2 rounded-full bg-current" />
-							critical
-						</Badge>
+						<Badge variant="critical">critical</Badge>
 						<CardTitle>using var instead of const/let</CardTitle>
 						<CardDescription>
 							the var keyword is function-scoped rather than block-scoped, which
@@ -93,9 +74,7 @@ export default function ComponentsPage() {
 				</section>
 
 				<section>
-					<h2 className="mb-4 font-mono text-xl font-semibold text-accent-green">
-						{/* code_block */}
-					</h2>
+					<SectionTitle className="mb-4 text-xl">code_block</SectionTitle>
 
 					<div className="max-w-xl">
 						<CodeBlock code={sampleCode} filename="calculate.js" />
@@ -103,9 +82,7 @@ export default function ComponentsPage() {
 				</section>
 
 				<section>
-					<h2 className="mb-4 font-mono text-xl font-semibold text-accent-green">
-						{/* diff_line */}
-					</h2>
+					<SectionTitle className="mb-4 text-xl">diff_line</SectionTitle>
 
 					<div className="max-w-xl border border-border-primary bg-bg-input">
 						<DiffLine type="removed" prefix="-">
@@ -121,9 +98,7 @@ export default function ComponentsPage() {
 				</section>
 
 				<section>
-					<h2 className="mb-4 font-mono text-xl font-semibold text-accent-green">
-						{/* table_row */}
-					</h2>
+					<SectionTitle className="mb-4 text-xl">table_row</SectionTitle>
 
 					<div className="max-w-2xl border border-border-primary bg-bg-input">
 						<LeaderboardRow>
@@ -160,9 +135,7 @@ export default function ComponentsPage() {
 				</section>
 
 				<section>
-					<h2 className="mb-4 font-mono text-xl font-semibold text-accent-green">
-						{/* score_ring */}
-					</h2>
+					<SectionTitle className="mb-4 text-xl">score_ring</SectionTitle>
 
 					<div className="flex gap-8">
 						<ScoreRing score={3.5} />

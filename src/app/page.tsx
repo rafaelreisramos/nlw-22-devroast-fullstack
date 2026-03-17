@@ -10,6 +10,7 @@ import {
 	LeaderboardRowRank,
 	LeaderboardRowScore,
 } from "@/components/ui/leaderboard-row";
+import { SectionTitle } from "@/components/ui/section-title";
 import { Toggle } from "@/components/ui/toggle";
 
 export default function Home() {
@@ -70,14 +71,7 @@ export default function Home() {
 				<div className="flex flex-col gap-6">
 					{/* Title Row */}
 					<div className="flex items-center justify-between">
-						<div className="flex items-center gap-2">
-							<span className="font-mono text-sm font-bold text-accent-green">
-								{`//`}
-							</span>
-							<span className="font-mono text-sm font-bold text-text-primary">
-								shame_leaderboard
-							</span>
-						</div>
+						<SectionTitle>shame_leaderboard</SectionTitle>
 						<div className="rounded-sm border border-border-primary px-3 py-1.5">
 							<span className="font-mono text-xs text-text-secondary">
 								$ view_all &gt;&gt;
