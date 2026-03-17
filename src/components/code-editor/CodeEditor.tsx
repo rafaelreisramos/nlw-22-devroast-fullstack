@@ -20,7 +20,10 @@ export interface CodeEditorProps {
 	className?: string;
 	filename?: string;
 	placeholder?: string;
+	maxLength?: number;
 }
+
+const DEFAULT_MAX_LENGTH = 2000;
 
 const LANGUAGE_LABELS: Record<SupportedLanguage, string> = {
 	javascript: "JavaScript",
@@ -46,12 +49,16 @@ export function CodeEditor({
 	className,
 	filename,
 	placeholder = "Paste your code here...",
+	maxLength = DEFAULT_MAX_LENGTH,
 }: CodeEditorProps) {
 	const [code, setCode] = useState<string>(initialCode);
 	const [html, setHtml] = useState<string>("");
 	const [currentLanguage, setCurrentLanguage] =
 		useState<SupportedLanguage>("javascript");
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+	const codeLength = code.length;
+	const isOverLimit = codeLength > maxLength;
 
 	useEffect(() => {
 		if (!initialLanguage && code) {
@@ -75,9 +82,11 @@ export function CodeEditor({
 	}, [code, currentLanguage]);
 
 	const handleCodeChange = (newCode: string) => {
-		setCode(newCode);
-		if (onCodeChange) {
-			onCodeChange(newCode);
+		if (newCode.length <= maxLength) {
+			setCode(newCode);
+			if (onCodeChange) {
+				onCodeChange(newCode);
+			}
 		}
 	};
 
@@ -184,6 +193,16 @@ export function CodeEditor({
 						/>
 					</div>
 				</div>
+			</div>
+			<div className="flex h-8 items-center justify-end border-t border-border-primary px-3">
+				<span
+					className={twMerge(
+						"font-mono text-xs",
+						isOverLimit ? "text-accent-red" : "text-text-tertiary",
+					)}
+				>
+					{codeLength}/{maxLength}
+				</span>
 			</div>
 		</div>
 	);

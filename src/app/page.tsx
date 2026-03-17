@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { CodeEditor } from "@/components/code-editor";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +13,8 @@ import {
 import { Toggle } from "@/components/ui/toggle";
 
 export default function Home() {
+	const [code, setCode] = useState("");
+	const isCodeValid = code.length > 0 && code.length <= 2000;
 	return (
 		<main className="flex min-h-[calc(100vh-3.5rem)] flex-col items-center bg-bg-page px-10 py-20">
 			<div className="flex w-full max-w-5xl flex-col gap-8">
@@ -29,25 +34,7 @@ export default function Home() {
 				</div>
 
 				{/* Code Input Area */}
-				<CodeEditor
-					code={`function calculateTotal(items) {
-  var total = 0;
-  for (var i = 0; i < items.length; i++) {
-    total = total + items[i].price;
-  }
-
-  if (total > 100) {
-    console.log("discount applied");
-    total = total * 0.9;
-  }
-
-  // TODO: handle tax calculation
-  // TODO: handle currency conversion
-
-  return total;
-}`}
-					showLanguageSelector
-				/>
+				<CodeEditor code={code} onCodeChange={setCode} showLanguageSelector />
 
 				{/* Actions Bar */}
 				<div className="flex items-center justify-between">
@@ -62,7 +49,7 @@ export default function Home() {
 							{`// maximum sarcasm enabled`}
 						</span>
 					</div>
-					<Button>$ roast_my_code</Button>
+					<Button disabled={!isCodeValid}>$ roast_my_code</Button>
 				</div>
 
 				{/* Stats Footer */}

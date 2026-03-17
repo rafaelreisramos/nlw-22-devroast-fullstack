@@ -93,3 +93,7 @@ Utilize os componentes da @components/ui, especialmente o CodeBlock na elaboraç
 Caso seja necessário refatorar o componente CodeBlock, para separar o cabeçalho da caixa de código, utilize o pattern de composição.
 
 ---
+
+Vamos limitar a quantidade de código inserida no nosso editor. Defina um limite de 2000 caracteres para um snippet de cógido e mostre este limite no canto inferior direito do editor. Caso o código passe deste limite desabilite o botão de enviar o código.
+
+---
