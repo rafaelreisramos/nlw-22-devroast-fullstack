@@ -81,3 +81,15 @@ Não use o drizzle-seed, escreve os inserts manualmente. Utilize a biblioteca fa
 Insira uns 100 roasts. Crie um script no package.json para executar o seed usando o suporte nativo do node ou tsx.
 
 ---
+
+Vamos implementar a página shame leaderboard selecionada no app desktop do Pencil.
+
+Por enquanto esta página irá conter apenas dados estáticos.
+
+Use SSR para que esta página tenha indexação.
+
+Utilize os componentes da @components/ui, especialmente o CodeBlock na elaboração desta página.
+
+Caso seja necessário refatorar o componente CodeBlock, para separar o cabeçalho da caixa de código, utilize o pattern de composição.
+
+---
