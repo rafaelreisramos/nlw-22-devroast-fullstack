@@ -1,0 +1,244 @@
+{
+	"id": "1755c53f-db3b-468d-b1a3-edeb1487c7a1",
+	"prevId": "00000000-0000-0000-0000-000000000000",
+	"version": "7",
+	"dialect": "postgresql",
+	"tables": {
+		"public.issues": {
+			"name": "issues",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "uuid",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"submission_id": {
+					"name": "submission_id",
+					"type": "uuid",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"title": {
+					"name": "title",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"description": {
+					"name": "description",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"severity": {
+					"name": "severity",
+					"type": "severity",
+					"typeSchema": "public",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"line_number": {
+					"name": "line_number",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"issues_submission_id_submissions_id_fk": {
+					"name": "issues_submission_id_submissions_id_fk",
+					"tableFrom": "issues",
+					"tableTo": "submissions",
+					"columnsFrom": ["submission_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"policies": {},
+			"checkConstraints": {},
+			"isRLSEnabled": false
+		},
+		"public.submissions": {
+			"name": "submissions",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "uuid",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"code": {
+					"name": "code",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"language": {
+					"name": "language",
+					"type": "language",
+					"typeSchema": "public",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"score": {
+					"name": "score",
+					"type": "smallint",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"verdict": {
+					"name": "verdict",
+					"type": "verdict",
+					"typeSchema": "public",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"roast_quote": {
+					"name": "roast_quote",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"line_count": {
+					"name": "line_count",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"policies": {},
+			"checkConstraints": {},
+			"isRLSEnabled": false
+		},
+		"public.suggestions": {
+			"name": "suggestions",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "uuid",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"submission_id": {
+					"name": "submission_id",
+					"type": "uuid",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"original_code": {
+					"name": "original_code",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"suggested_code": {
+					"name": "suggested_code",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"explanation": {
+					"name": "explanation",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"suggestions_submission_id_submissions_id_fk": {
+					"name": "suggestions_submission_id_submissions_id_fk",
+					"tableFrom": "suggestions",
+					"tableTo": "submissions",
+					"columnsFrom": ["submission_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"policies": {},
+			"checkConstraints": {},
+			"isRLSEnabled": false
+		}
+	},
+	"enums": {
+		"public.language": {
+			"name": "language",
+			"schema": "public",
+			"values": [
+				"javascript",
+				"typescript",
+				"python",
+				"java",
+				"go",
+				"rust",
+				"ruby",
+				"php",
+				"sql",
+				"html",
+				"css",
+				"json"
+			]
+		},
+		"public.severity": {
+			"name": "severity",
+			"schema": "public",
+			"values": ["error", "warning", "info"]
+		},
+		"public.verdict": {
+			"name": "verdict",
+			"schema": "public",
+			"values": [
+				"needs_urgent_help",
+				"serious_problems",
+				"needs_improvement",
+				"acceptable"
+			]
+		}
+	},
+	"schemas": {},
+	"sequences": {},
+	"roles": {},
+	"policies": {},
+	"views": {},
+	"_meta": {
+		"columns": {},
+		"schemas": {},
+		"tables": {}
+	}
+}

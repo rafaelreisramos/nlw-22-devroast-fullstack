@@ -43,6 +43,7 @@ Os componentes foram criados por padrão usando forwardRef. Elimine o uso do for
 4. Faça o commit usando conventional commit pattern.
 
 ---
+
 Agora vamos construir a funcionalidade de editor com syntax highlighting. Esse editor precisa funcionar de uma forma que, quando o usuário colar um trecho de código, as cores (syntax highlighting) sejam applicadas de acordo com a linguagem que deve ser descoberta automaticamente. Podemos também ter uma opção do usuário selecionar a linguagem do código através de uma seleção manual da linguagem no editor da homepage. Deve ser criado um componente, mas que não faz parte da ui, somente deve ser colocado na pasta src/components chamado code-editor.
 
 Quero que você faça uma uma pesquisa das melhores opções para construção deste editor. Eu gosto muito do editor do ray-so (https://github.com/raycast/ray-so). Você pode vasculhar o código para ver como o editor é feito mas pode sugerir outras opções caso faça sentido.
@@ -50,4 +51,33 @@ Quero que você faça uma uma pesquisa das melhores opções para construção d
 Não quero que você implemente NADA, apenas crie um arquivo em markdown dentro da pasta specs, na raiz do projeto, com a conclusão dos estudos e a especificação para a implementação desta feature.
 
 Crie to-dos dentro deste arquivo e mefaça perguntas, caso necessário, para compreender esta tarefa melhor.
+
+---
+
+Utilize o MCP do Pencil para vasculhar nosso layout aberto no app desktop do Pencil e o que temos até agora documentado no @README para escrever uma especificação dentro da pasta @spec, em markdown, para implementação do Drizzle.
+
+Essa especificação deve incluir quais tabelas precisamos ter, enums e to-dos para a implementação do Drizzle ORM neste projeto com Docker Compose para subir o Postgres.
+
+Me faça perguntas caso necessário.
+
+---
+
+Agora com base na spec @specs/drizzle-spec.md faça o plano detalhado de implementação do banco de dados neste projeto.
+
+Alguns pontos:
+
+1. Use a config de casing do Drizzle na config e no schema para evitar de escrever duas vezes o nom das colunas.
+
+2. Não quero relations nativas do drizzle; escreva as queries sem do db.query do drizzle, ou seja, mais sql e joins.
+
+3. Não crie índices desnecessários, apenas o que for muito importante , por exemplo, índices em chaves estrangeiras ou primárias são desnecessários.
+
+---
+
+Crie um arquivo de seed e um comando de seed utilizando o drizzle para popular o banco com algumas submissões/roasts.
+
+Não use o drizzle-seed, escreve os inserts manualmente. Utilize a biblioteca faker-js para geração de dados fictícios.
+
+Insira uns 100 roasts. Crie um script no package.json para executar o seed usando o suporte nativo do node ou tsx.
+
 ---
