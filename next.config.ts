@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-	/* config options here */
+	serverExternalPackages: ["pg", "pg-extra", "pg-connection-string", "pgpass"],
+	transpilePackages: ["drizzle-orm"],
 };
 
 export default nextConfig;

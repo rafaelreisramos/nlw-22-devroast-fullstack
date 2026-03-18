@@ -113,3 +113,71 @@ Em varias partes do layout nós temos um título de seção que repete a formata
 Crie um componente chamado session-title e aplique ele nas páginas conforme o layout do app desktop do pencil (use o mcp do pencil)
 
 ---
+
+Estamos usando a ideia de criar specs na pasta @specs/ antes de implementar uma nova feature. Crie um arquivo AGENTS.md nesta pasta documentando um formato adequado de criarmos estas novas specs para quando formos criar novas especificações.
+
+Mantenha este arquivo muito conciso somente com o que é necessário.
+
+---
+
+Agora, seguindo esse padrão, quero que voce crie uma nova spec para implementação do tRPC que vamos utilizar como camada de API/back-end do nosso projeto. Como é um projeto Next.js é importante que você integre o tRPC com o SSR/Server Components do Next.js seguindo estas documentações:
+
+1. https://trpc.io/docs/client/tanstack-react-query/server-components
+2. https://trpc.io/docs/client/tanstack-react-query/setup
+
+---
+
+Execute a implementação do tRPC com base na spec @spec/trpc-spec.md.
+
+Vamos incluir por agora apenas uma função simples integrada entre front-end e tRPC que é a listagem das métricas na homepage sobre a quantidade de roasted codes e avg score. Todo o restante não deve ser implementado por agora no tRPC ou no front-end.
+
+Quando integrar o tRPC no front-end, use sempre que possível Server Components com Suspense API e skeleton components para loading state destas informações. 
+
+Para essas métricas especificamente, quero que use o https://number-flow.barvian.me/ para os números sairem de 0 (zero) para o número real após o carregamento. Neste caso, se for necessário usar client ccomponents, utilize sem medo.
+
+---
+
+Eu quero que você mude o loading state para não usar suspense/skeleton no componente de métricas especificamente. Use apenas 0 como valor inicial de depois altere para o valor carregado da API para que o number-flow faça a animaão de incremento de valor.
+
+---
+
+Eu quero algo tipo 
+```js
+  prefetch(trpc.roast.getStats.queryOptions());
+
+      <Suspense>
+        <HydrateClient>
+          <HomeMetrics />
+        </HydrateClient>
+      </Suspense>
+```
+na home
+
+e 
+
+```js
+  const trpc = useTRPC();
+  const { data } = useQuery(trpc.roast.getStats.queryOptions());
+
+  return (
+    <div className="flex items-center gap-6 justify-center pt-8">
+      <span className="font-mono text-xs text-text-tertiary">
+        <NumberFlow
+          value={data?.totalRoasts ?? 0}
+          format={{ useGrouping: true }}
+          className="font-mono tabular-nums"
+        />{" "}
+        codes roasted
+      </span>
+      <span className="font-mono text-xs text-text-tertiary">·</span>
+      <span className="font-mono text-xs text-text-tertiary">
+        avg score:{" "}
+        <NumberFlow
+          value={data?.avgScore ?? 0}
+          format={{ minimumFractionDigits: 1, maximumFractionDigits: 1 }}
+          className="font-mono tabular-nums"
+        />
+
+```
+
+no componente home-metrics

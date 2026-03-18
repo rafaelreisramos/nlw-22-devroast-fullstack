@@ -1,8 +1,5 @@
-"use client";
-
-import { useState } from "react";
-import { CodeEditor } from "@/components/code-editor";
-import { Button } from "@/components/ui/button";
+import { CodeSection } from "@/components/code-section";
+import { HomeMetrics } from "@/components/home-metrics";
 import {
 	LeaderboardRow,
 	LeaderboardRowCode,
@@ -11,15 +8,17 @@ import {
 	LeaderboardRowScore,
 } from "@/components/ui/leaderboard-row";
 import { SectionTitle } from "@/components/ui/section-title";
-import { Toggle } from "@/components/ui/toggle";
+import { HydrateClient } from "@/trpc/hydrate-client";
+import { prefetch, trpc } from "@/trpc/server";
+
+export const revalidate = 0;
 
 export default function Home() {
-	const [code, setCode] = useState("");
-	const isCodeValid = code.length > 0 && code.length <= 2000;
+	prefetch(trpc.metrics.getHomeStats.queryOptions());
+
 	return (
 		<main className="flex min-h-[calc(100vh-3.5rem)] flex-col items-center bg-bg-page px-10 py-20">
 			<div className="flex w-full max-w-5xl flex-col gap-8">
-				{/* Hero Title */}
 				<div className="flex flex-col items-center gap-3 text-center">
 					<div className="flex items-center gap-3">
 						<span className="font-mono text-4xl font-bold text-accent-green">
@@ -34,42 +33,15 @@ export default function Home() {
 					</p>
 				</div>
 
-				{/* Code Input Area */}
-				<CodeEditor code={code} onCodeChange={setCode} showLanguageSelector />
+				<CodeSection />
 
-				{/* Actions Bar */}
-				<div className="flex items-center justify-between">
-					<div className="flex items-center gap-4">
-						<div className="flex items-center gap-2.5">
-							<Toggle defaultChecked />
-							<span className="font-mono text-sm text-accent-green">
-								roast mode
-							</span>
-						</div>
-						<span className="font-mono text-xs text-text-tertiary">
-							{`// maximum sarcasm enabled`}
-						</span>
-					</div>
-					<Button disabled={!isCodeValid}>$ roast_my_code</Button>
-				</div>
+				<HydrateClient>
+					<HomeMetrics />
+				</HydrateClient>
 
-				{/* Stats Footer */}
-				<div className="flex items-center justify-center gap-6 py-4">
-					<span className="font-mono text-xs text-text-tertiary">
-						2,847 codes roasted
-					</span>
-					<span className="text-text-tertiary">·</span>
-					<span className="font-mono text-xs text-text-tertiary">
-						avg score: 4.2/10
-					</span>
-				</div>
-
-				{/* Spacer */}
 				<div className="h-16" />
 
-				{/* Leaderboard Preview */}
 				<div className="flex flex-col gap-6">
-					{/* Title Row */}
 					<div className="flex items-center justify-between">
 						<SectionTitle>shame_leaderboard</SectionTitle>
 						<div className="rounded-sm border border-border-primary px-3 py-1.5">
@@ -84,7 +56,6 @@ export default function Home() {
 					</p>
 
 					<div className="overflow-hidden rounded-sm border border-border-primary">
-						{/* Table Header */}
 						<div className="flex items-center gap-6 border-b border-border-primary bg-bg-surface px-5 py-3">
 							<div className="w-12">
 								<span className="font-mono text-xs font-medium text-text-tertiary">
@@ -107,21 +78,16 @@ export default function Home() {
 								</span>
 							</div>
 						</div>
-						{/* Table Rows */}
 						<LeaderboardRow>
 							<LeaderboardRowRank>1</LeaderboardRowRank>
 							<LeaderboardRowScore>1.2</LeaderboardRowScore>
 							<LeaderboardRowCode>
 								<div className="flex flex-col gap-0.75">
-									<span className="font-mono text-sm text-text-primary">
-										{`eval(prompt("enter code"))`}
-									</span>
+									<span className="font-mono text-sm text-text-primary">{`eval(prompt("enter code"))`}</span>
 									<span className="font-mono text-sm text-text-primary">
 										document.write(response)
 									</span>
-									<span className="font-mono text-sm text-text-tertiary">
-										{`// trust the user lol`}
-									</span>
+									<span className="font-mono text-sm text-text-tertiary">{`// trust the user lol`}</span>
 								</div>
 							</LeaderboardRowCode>
 							<LeaderboardRowLanguage>javascript</LeaderboardRowLanguage>
