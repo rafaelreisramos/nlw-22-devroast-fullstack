@@ -205,3 +205,99 @@ Instale o mcp do playwright (https://playwright.dev/)
 
 A shame leaderboard continua mostrando somente o trigger do expand code sem mostrar as 3 linhas de código. Use o mcp do playwright para verificar o funcionamento e layout e corrigir se necessário.
 
+---
+
+Ao clicar em show more as novas linhas mostradas não vem com a syntax highlight aplicada.
+
+---
+
+Especificamente para rust que são as dus primeiras linhas da shame leaderboard parece que não está aplicando o synthax highlight. Para python que é a terceira linha da shame leaderboar funcionou.
+
+---
+
+# Prompt Session - Leaderboard Page Implementation
+
+Data: 2026-03-19
+
+---
+
+## Brainstorming Prompts
+
+### 1. Feature Request
+```
+eu quero desenvolver agora o funcionamento da página de leaderboard @src/app/leaderboard/page.tsx seguindo a ideia do collapsible que implementamos na shame leaderboard da @src/app/page.tsx. Você deve implementar o back-end com tRPC e a integração com o front-end. Vamos exibir 20 resultados nesta página sem paginação.
+```
+
+### 2. Leaderboard Scope
+```
+somente shame leaderboard
+```
+
+### 3. Expand Behavior
+```
+Neste momento só expandir inline
+```
+
+### 4. Expand Content
+```
+numero de linhas. As outras informações continuam aparecendo no header do code-block então não tem necessidade.
+```
+
+### 5. Fetch Pattern
+```
+Opção A. Para múltiplas chamadas em uma mesma página opte por Promise.all.
+```
+
+### 6. Design Approach
+```
+sim
+```
+
+---
+
+## Implementation Decisions
+
+### 7. Caching Strategy
+```
+Eu quero que esse leaderboard atualizasse só uma vez por hora, revalidate, para não ficar batendo no banco toda hora. Isso vale para a homepage e para a leaderboard page.
+```
+
+### 8. Use Cache Directive
+```
+Eu quero que você leia sobre cache componentes na documentação do next, habilite os cache components na config, use a diretiva "use cache" nos componentes para aplicar a revalidação e não a constante revalidate nas Páginas.
+```
+
+### 9. Cache Components Selection
+```
+existe mais algum componente que possa usar a diretiva "use cache" para aumentar a performance das nossas páginas?
+```
+
+### 10. Cache Implementation
+```
+Siga com a implementação completa.
+```
+
+### 11. Revalidate Constant
+```
+Não quero que use a constante revalidate, use outra forma e/ou sintaxe.
+```
+
+### 12. Math.random Fix
+```
+Corrigir erro: Math.random() em Server Component
+```
+
+### 13. Skeleton Stats
+```
+não está sendo representado no loading.tsx
+```
+
+### 14. Loading Position
+```
+parece que o loading não está sendo aplicado. Continua aplicando o LeaderboardSkeleton
+```
+
+### 15. Loading Stats Representation
+```
+para representar fielmente a página falta um skeleton no loading.tsx para representar as informações de submissions e avg_score
+```

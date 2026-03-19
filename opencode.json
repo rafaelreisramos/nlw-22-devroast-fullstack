@@ -15,5 +15,6 @@
 			"command": ["npx", "@playwright/mcp@latest"],
 			"enabled": true
 		}
-	}
+	},
+	"plugin": ["superpowers@git+https://github.com/obra/superpowers.git"]
 }
