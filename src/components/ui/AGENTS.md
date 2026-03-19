@@ -1,5 +1,12 @@
 # UI Components Guidelines
 
+## Primitivas
+
+**Usar Base UI para primitivas com comportamentos** (Toggle, Select, etc.)
+
+- https://base-ui.com/react/components
+- Pattern de composição para subcomponentes
+
 ## Structure
 
 ### With Variants (use tv)
@@ -20,7 +27,7 @@ function Component({ className, variant, ...props }) {
 }
 ```
 
-### Without Variants (use twMerge)
+### Without Variants
 
 Use when component has single style:
 
@@ -38,23 +45,16 @@ function Component({ className, children, ...props }) {
 
 ## Key Rules
 
-- **Named exports only** - No default exports
-- **Use tv()** for components with variants (Button, Badge)
-- **Use twMerge** for components without variants (Card, LeaderboardRow)
-- **No forwardRef** unless needed for refs
-- **displayName** on all components
+- **Named exports only**
+- **Use tv()** for variants (Button, Badge)
+- **Use twMerge** for single style
+- **Use Base UI** for interactive primitives
+- **No forwardRef** unless needed
 
 ## Canonical Classes
 
-Prefer canonical Tailwind classes:
-
 | Arbitrary | Canonical |
-|----------|-----------|
+|-----------|-----------|
 | `w-[50px]` | `w-12` |
 | `w-[70px]` | `w-16` |
 | `h-5.5` | `h-6` |
-
-## File Naming
-
-- kebab-case: `button.tsx`, `card.tsx`
-- Export component and variants
