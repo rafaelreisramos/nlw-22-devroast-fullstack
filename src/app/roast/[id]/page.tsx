@@ -1,23 +1,8 @@
+import { Suspense } from "react";
 import { RoastResultsContent } from "@/components/roast-results-content";
-import { HydrateClient } from "@/trpc/hydrate-client";
-import { caller, prefetch, trpc } from "@/trpc/server";
 
-export async function generateMetadata({
-	params,
-}: {
-	params: Promise<{ id: string }>;
-}) {
-	const { id } = await params;
-
-	try {
-		const data = await caller.roast.getById({ id });
-		return {
-			title: `Roast Result (${data.score}/10) | DevRoast`,
-			description: data.roastQuote,
-		};
-	} catch {
-		return { title: "Roast Not Found | DevRoast" };
-	}
+export async function generateMetadata(_: { params: Promise<{ id: string }> }) {
+	return { title: "Roast Result | DevRoast" };
 }
 
 export default async function RoastResultsPage({
@@ -27,11 +12,15 @@ export default async function RoastResultsPage({
 }) {
 	const { id } = await params;
 
-	prefetch(trpc.roast.getById.queryOptions({ id }));
-
 	return (
-		<HydrateClient>
+		<Suspense
+			fallback={
+				<div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center">
+					<p className="font-mono text-text-secondary">loading...</p>
+				</div>
+			}
+		>
 			<RoastResultsContent id={id} />
-		</HydrateClient>
+		</Suspense>
 	);
 }

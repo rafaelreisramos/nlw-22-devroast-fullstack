@@ -1,23 +1,12 @@
 import type { HTMLAttributes } from "react";
-import { cache } from "react";
-import { codeToHtml } from "shiki";
 import { twMerge } from "tailwind-merge";
+import { cachedCodeToHtml } from "@/lib/shiki";
 
 export interface CodeBlockProps {
 	code: string;
 	language?: string;
 	filename?: string;
 }
-
-const cachedCodeToHtml = cache(
-	async (code: string, lang: string): Promise<string> => {
-		"use cache";
-		return codeToHtml(code, {
-			lang,
-			theme: "vesper",
-		});
-	},
-);
 
 function CodeBlockHeader({
 	filename,
