@@ -179,5 +179,29 @@ e
         />
 
 ```
+---
 
-no componente home-metrics
+Agora vamos implemetar o shame leaderboard da homepage do nosso projeto. Esse leaderboard vai trazer apenas 3 resultados, os 3 piores trechos de código e também deve trazer a métrica roasts total no rodapé. Aqui é importante usar Server Components e a Suspense API para exibir um loading state com um Skeleton enquanto os dadso estão sendo carregados.
+
+---
+
+Os códigos da leaderboard não estão sendo apresentandos com a syntax highlighting correpondente da coluna lang da tabela. Verifique tamém se a coluna lang está coerente com os snippets de código da coluna code e se o score está vindo também corretamente.
+
+---
+
+Um problema que temos na homepage é que estamos exibindo apenas 3 linhas do código. na shame leaderboard. Eu gostaria que pudéssemos exibir ó código por completo, talvez tendo um max height na linha da tabela e o usuário podendo clicar para exibir o restante (collapsible. Mantenha o code-block com o synthax highlight). 
+
+Se for usar collpsible use o base-ui sempre que possível para os primitivos.
+
+---
+
+Cada linha da shame leaderboard deve sempre mostrar 3 linhas de código. Caso o código seja maior o código pode ser expandido.
+
+---
+
+Instale o mcp do playwright (https://playwright.dev/)
+
+---
+
+A shame leaderboard continua mostrando somente o trigger do expand code sem mostrar as 3 linhas de código. Use o mcp do playwright para verificar o funcionamento e layout e corrigir se necessário.
+

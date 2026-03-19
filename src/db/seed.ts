@@ -28,32 +28,83 @@ const SEVERITIES = ["error", "warning", "info"];
 
 const CODE_TEMPLATES: Record<string, string[]> = {
 	javascript: [
-		"function foo() { return 1 }",
-		"var x = 1; var y = 2; var z = 3; var a = 4; var b = 5;",
-		"const arr = [1,2,3]; arr.forEach(x => console.log(x));",
-		"if (x == 1) { doSomething(); } else { doOther(); }",
-		"for (var i = 0; i < 10; i++) { console.log(i); }",
+		"function calculateSum(arr) { let sum = 0; for (let i = 0; i < arr.length; i++) { sum += arr[i]; } return sum; }",
+		"function getUser(id) { const user = db.find(u => u.id === id); if (!user) return null; return user.name; }",
+		"const config = { apiUrl: '/api/v1', timeout: 5000, retries: 3, debug: true };",
+		"function processData(items) { return items.filter(item => item.active).map(item => item.value); }",
+		"let result = data.reduce((acc, curr) => { acc.sum += curr.amount; return acc; }, { sum: 0 });",
 	],
 	typescript: [
-		"const x: number = 1;",
-		"interface User { name: string; age: number; }",
-		"type Foo = string | number;",
-		"function fn<T>(arg: T): T { return arg; }",
+		"type ApiResponse<T> = { data: T; status: number; message: string; }",
+		"interface User { id: string; name: string; email: string; createdAt: Date; }",
+		"async function fetchUser(id: string): Promise<User | null> { const res = await api.get(id); return res.data; }",
+		"const users: User[] = data.map((item) => ({ id: item._id, name: item.user_name, email: item.email, createdAt: new Date() }));",
+		"function validateInput(value: unknown): value is string { return typeof value === 'string' && value.length > 0; }",
 	],
 	python: [
-		"def foo(): return 1",
-		"x = 1; y = 2; z = 3",
-		"for i in range(10): print(i)",
-		"if x == 1: pass",
-		"class Foo: pass",
+		"def calculate_total(prices): total = 0; [total := total + p for p in prices]; return total",
+		"class DataProcessor: def __init__(self, data): self.data = data; self.result = None; def process(self): self.result = [x for x in self.data if x > 0]; return self.result",
+		"users = [{'id': i, 'name': f'User {i}', 'active': i % 2 == 0} for i in range(10)]",
+		"def get_by_id(items, id): result = next((x for x in items if x['id'] == id), None); return result",
+		"import json; data = json.loads(response.text); filtered = [x for x in data if x.get('status') == 'active']",
 	],
 	java: [
-		"public class Main { public static void main(String[] args) {} }",
-		"int x = 1;",
-		"for (int i = 0; i < 10; i++) {}",
+		"public class UserService { private final UserRepository repo; public UserService(UserRepository r) { this.repo = r; } public Optional<User> findById(Long id) { return repo.findById(id); } }",
+		"List<String> names = users.stream().filter(u -> u.isActive()).map(User::getName).collect(Collectors.toList());",
+		"public int calculateSum(List<Integer> numbers) { int sum = 0; for (int n : numbers) { sum += n; } return sum; }",
 	],
-	go: ["func main() {}", "var x int = 1", "if err != nil { return err }"],
-	rust: ["fn main() {}", "let x = 1;", "impl Trait for Struct {}"],
+	go: [
+		"func processItems(items []Item) []Result { results := make([]Result, 0); for _, item := range items { if item.Active { results = append(results, Result{ID: item.ID, Value: item.Value}) } }; return results }",
+		"type Config struct { URL string; Timeout int; Retries int }; var cfg = Config{URL: os.Getenv('API_URL'), Timeout: 5000, Retries: 3}",
+		"func main() { data, err := json.Marshal(config); if err != nil { log.Fatal(err) }; fmt.Println(string(data)) }",
+	],
+	rust: [
+		"fn process_items(items: Vec<Item>) -> Vec<Result> { items.into_iter().filter(|i| i.active).map(|i| Result { id: i.id, value: i.value }).collect() }",
+		"let users: Vec<User> = data.iter().map(|item| User { id: item._id.clone(), name: item.user_name.clone(), email: item.user_name.clone() }).collect();",
+		"impl Display for Error { fn fmt(&self, f: &mut Formatter) -> fmt::Result { write!(f, 'Error: {}', self.message) } }",
+	],
+	ruby: [
+		"def calculate_sum(arr); arr.reduce(0) { |sum, n| sum + n }; end",
+		"users = User.where(active: true).map { |u| { id: u.id, name: u.name } }",
+		"class DataProcessor; def initialize(data); @data = data; end; def process; @data.select(&:active).map(&:value); end; end",
+		"result = items.reduce({ sum: 0 }) { |acc, item| acc[:sum] += item[:amount]; acc }",
+		"require 'json'; data = JSON.parse(response.body); filtered = data.select { |i| i['status'] == 'active' }",
+	],
+	php: [
+		"function calculateSum($arr) { $sum = 0; foreach ($arr as $n) { $sum += $n; } return $sum; }",
+		"$users = array_filter($data, fn($u) => $u['active']); $names = array_map(fn($u) => $u['name'], $users);",
+		"$config = ['apiUrl' => '/api/v1', 'timeout' => 5000, 'retries' => 3, 'debug' => true];",
+		"class DataProcessor { private $data; public function __construct($data) { $this->data = $data; } public function process() { return array_map(fn($i) => $i['value'], array_filter($this->data, fn($i) => $i['active'])); } }",
+		"$result = array_reduce($items, fn($acc, $item) => ['sum' => $acc['sum'] + $item['amount']], ['sum' => 0]);",
+	],
+	sql: [
+		"SELECT u.id, u.name, u.email FROM users u WHERE u.active = true ORDER BY u.created_at DESC",
+		"SELECT COUNT(*) as total, AVG(score) as avg_score FROM submissions WHERE status = 'completed' GROUP BY category",
+		"INSERT INTO users (id, name, email, created_at) VALUES (gen_random_uuid(), 'John', 'john@example.com', NOW())",
+		"UPDATE users SET last_login = NOW(), login_count = login_count + 1 WHERE id = $1 RETURNING *",
+		"DELETE FROM sessions WHERE expires_at < NOW(); SELECT * FROM users WHERE id NOT IN (SELECT user_id FROM sessions)",
+	],
+	html: [
+		"<div class='card'><h2>Welcome</h2><p>User data loaded successfully.</p></div>",
+		"<nav><ul><li><a href='/'>Home</a></li><li><a href='/about'>About</a></li><li><a href='/contact'>Contact</a></li></ul></nav>",
+		"<form action='/submit' method='POST'><input type='text' name='username' placeholder='Enter username'/><button type='submit'>Submit</button></form>",
+		"<table><thead><tr><th>ID</th><th>Name</th><th>Status</th></tr></thead><tbody><tr><td>1</td><td>Item One</td><td>Active</td></tr></tbody></table>",
+		"<div id='app'><header><h1>Dashboard</h1></header><main><section class='stats'>Loading...</section></main></div>",
+	],
+	css: [
+		".container { display: flex; flex-direction: column; gap: 1rem; padding: 1rem; }",
+		".card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 1rem; }",
+		".button { background: #10b981; color: #0a0a0a; padding: 0.5rem 1rem; border: none; cursor: pointer; }",
+		".grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }",
+		"@media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }",
+	],
+	json: [
+		'{"id": "1", "name": "John", "email": "john@example.com", "active": true, "score": 85}',
+		'{"users": [{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}], "total": 2}',
+		'{"config": {"apiUrl": "/api/v1", "timeout": 5000, "retries": 3}, "debug": true}',
+		'{"data": [{"id": "a1", "value": 100}, {"id": "a2", "value": 200}], "count": 2}',
+		'{"result": {"success": true, "message": "Operation completed", "timestamp": "2024-01-15T10:30:00Z"}}',
+	],
 };
 
 const ISSUE_TITLES = [
@@ -116,17 +167,14 @@ function getScoreFromVerdict(verdict: string): number {
 
 function generateCode(language: string): string {
 	const templates = CODE_TEMPLATES[language] || CODE_TEMPLATES.javascript;
-	const template = getRandomElement(templates);
+	const lineCount = faker.number.int({ min: 8, max: 15 });
+	const selectedTemplates: string[] = [];
 
-	const lines = template.split("\n");
-	const lineCount = faker.number.int({ min: 3, max: 15 });
-
-	const repeatedLines: string[] = [];
 	for (let i = 0; i < lineCount; i++) {
-		repeatedLines.push(getRandomElement(lines));
+		selectedTemplates.push(getRandomElement(templates));
 	}
 
-	return repeatedLines.join("\n");
+	return selectedTemplates.join("\n");
 }
 
 function generateRoastQuote(verdict: string): string {

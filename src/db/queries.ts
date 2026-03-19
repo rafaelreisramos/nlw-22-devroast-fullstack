@@ -36,6 +36,14 @@ export type LeaderboardStats = {
 	avg_score: string;
 };
 
+export type ShameLeaderboardItem = {
+	id: string;
+	code: string;
+	language: string;
+	score: number;
+	created_at: Date;
+};
+
 export async function createSubmission(data: {
 	code: string;
 	language: string;
@@ -198,4 +206,23 @@ export async function createSubmissionWithDetails(data: {
 		issues: createdIssues,
 		suggestions: createdSuggestions,
 	};
+}
+
+export async function getShameLeaderboard(
+	limit = 3,
+): Promise<ShameLeaderboardItem[]> {
+	const result = await db.execute(sql`
+    SELECT id, code, language, score, created_at
+    FROM submissions
+    ORDER BY score ASC, created_at DESC
+    LIMIT ${limit}
+  `);
+	return result.rows as ShameLeaderboardItem[];
+}
+
+export async function getTotalRoastsCount(): Promise<number> {
+	const result = await db.execute(sql`
+    SELECT COUNT(*) as count FROM submissions
+  `);
+	return Number((result.rows[0] as { count: string }).count);
 }

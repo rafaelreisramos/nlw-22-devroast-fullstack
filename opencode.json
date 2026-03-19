@@ -9,6 +9,11 @@
 			"command": ["bash", "-c", "$HOME/.pencil-mcp/pencil-mcp-wrapper.sh"],
 			"enabled": true,
 			"type": "local"
+		},
+		"playwright": {
+			"type": "local",
+			"command": ["npx", "@playwright/mcp@latest"],
+			"enabled": true
 		}
 	}
 }
