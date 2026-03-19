@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import { codeToHtml } from "shiki";
 import { CollapsibleCode } from "@/components/ui/collapsible-code";
 import {
@@ -10,6 +11,9 @@ import {
 import { getShameLeaderboard, getTotalRoastsCount } from "@/db/queries";
 
 async function ShameLeaderboardContent() {
+	"use cache";
+	cacheLife({ stale: 3600 });
+
 	const [items, totalCount] = await Promise.all([
 		getShameLeaderboard(3),
 		getTotalRoastsCount(),

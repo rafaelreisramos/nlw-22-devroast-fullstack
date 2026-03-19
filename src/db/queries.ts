@@ -41,6 +41,7 @@ export type ShameLeaderboardItem = {
 	code: string;
 	language: string;
 	score: number;
+	line_count: number;
 	created_at: Date;
 };
 
@@ -212,10 +213,10 @@ export async function getShameLeaderboard(
 	limit = 3,
 ): Promise<ShameLeaderboardItem[]> {
 	const result = await db.execute(sql`
-    SELECT id, code, language, score, created_at
+    SELECT id, code, language, score, line_count, created_at
     FROM submissions
     ORDER BY score ASC, created_at DESC
-    LIMIT ${limit}
+    LIMIT ${sql`${limit}`}
   `);
 	return result.rows as ShameLeaderboardItem[];
 }

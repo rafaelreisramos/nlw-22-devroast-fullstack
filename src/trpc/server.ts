@@ -14,9 +14,14 @@ export const trpc = createTRPCOptionsProxy({
 	queryClient: getQueryClient,
 });
 
+import type { FetchQueryOptions } from "@tanstack/react-query";
+
 export function prefetch<
-	T extends ReturnType<typeof trpc.metrics.getHomeStats.queryOptions>,
->(queryOptions: T) {
+	TQueryFnData,
+	TError,
+	TData,
+	TQueryKey extends readonly unknown[],
+>(queryOptions: FetchQueryOptions<TQueryFnData, TError, TData, TQueryKey>) {
 	const queryClient = getQueryClient();
 	void queryClient.prefetchQuery(queryOptions);
 }

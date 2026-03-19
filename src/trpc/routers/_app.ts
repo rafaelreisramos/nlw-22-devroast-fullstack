@@ -1,6 +1,10 @@
 import { sql } from "drizzle-orm";
 import { db } from "@/db";
-import { getShameLeaderboard, getTotalRoastsCount } from "@/db/queries";
+import {
+	getLeaderboardStats,
+	getShameLeaderboard,
+	getTotalRoastsCount,
+} from "@/db/queries";
 import { submissions } from "@/db/schema";
 import { baseProcedure, createTRPCRouter } from "../init";
 
@@ -26,6 +30,12 @@ export const appRouter = createTRPCRouter({
 		}),
 		getTotalCount: baseProcedure.query(async () => {
 			return getTotalRoastsCount();
+		}),
+		getLeaderboardPage: baseProcedure.query(async () => {
+			return getShameLeaderboard(20);
+		}),
+		getLeaderboardStats: baseProcedure.query(async () => {
+			return getLeaderboardStats();
 		}),
 	}),
 });

@@ -4,9 +4,13 @@ import { useState } from "react";
 
 interface CollapsibleCodeProps {
 	html: string;
+	expandedContent?: string;
 }
 
-export function CollapsibleCode({ html }: CollapsibleCodeProps) {
+export function CollapsibleCode({
+	html,
+	expandedContent,
+}: CollapsibleCodeProps) {
 	const [isExpanded, setIsExpanded] = useState(false);
 
 	return (
@@ -45,6 +49,13 @@ export function CollapsibleCode({ html }: CollapsibleCodeProps) {
 					/>
 				</svg>
 			</button>
+			{isExpanded && expandedContent && (
+				<div className="border-t border-border-primary px-4 py-2">
+					<span className="font-mono text-xs text-text-tertiary">
+						{expandedContent}
+					</span>
+				</div>
+			)}
 		</div>
 	);
 }

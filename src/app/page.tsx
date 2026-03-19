@@ -1,13 +1,9 @@
-import { Suspense } from "react";
 import { CodeSection } from "@/components/code-section";
 import { HomeMetrics } from "@/components/home-metrics";
 import { ShameLeaderboardContent } from "@/components/shame-leaderboard-content";
-import { ShameLeaderboardSkeleton } from "@/components/shame-leaderboard-skeleton";
 import { SectionTitle } from "@/components/ui/section-title";
 import { HydrateClient } from "@/trpc/hydrate-client";
 import { prefetch, trpc } from "@/trpc/server";
-
-export const revalidate = 0;
 
 export default function Home() {
 	prefetch(trpc.metrics.getHomeStats.queryOptions());
@@ -51,9 +47,7 @@ export default function Home() {
 						{`// the worst code on the internet, ranked by shame`}
 					</p>
 
-					<Suspense fallback={<ShameLeaderboardSkeleton />}>
-						<ShameLeaderboardContent />
-					</Suspense>
+					<ShameLeaderboardContent />
 				</div>
 			</div>
 		</main>

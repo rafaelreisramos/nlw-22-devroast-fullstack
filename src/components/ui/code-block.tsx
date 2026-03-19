@@ -1,4 +1,5 @@
 import type { HTMLAttributes } from "react";
+import { cache } from "react";
 import { codeToHtml } from "shiki";
 import { twMerge } from "tailwind-merge";
 
@@ -7,6 +8,16 @@ export interface CodeBlockProps {
 	language?: string;
 	filename?: string;
 }
+
+const cachedCodeToHtml = cache(
+	async (code: string, lang: string): Promise<string> => {
+		"use cache";
+		return codeToHtml(code, {
+			lang,
+			theme: "vesper",
+		});
+	},
+);
 
 function CodeBlockHeader({
 	filename,
@@ -67,10 +78,7 @@ export async function CodeBlock({
 	language = "javascript",
 	filename,
 }: CodeBlockProps) {
-	const html = await codeToHtml(code, {
-		lang: language,
-		theme: "vesper",
-	});
+	const html = await cachedCodeToHtml(code, language);
 
 	return (
 		<div className="rounded-none border border-border-primary bg-bg-input overflow-hidden">
