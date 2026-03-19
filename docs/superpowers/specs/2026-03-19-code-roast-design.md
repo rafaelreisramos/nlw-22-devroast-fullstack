@@ -130,13 +130,14 @@ Analyze this {language} code:
 ```
 
 ### /roast/[id]/page
-- Server Component with `prefetch(trpc.roast.getById.queryOptions({ id }))`
-- Client Components:
-  - `ScoreRing` - exists
-  - `VerdictBadge` - exists
-  - `IssuesList` - grid of cards with severity indicators
-  - `SuggestionsDiff` - diff lines (added/removed)
-  - `CodePreview` - submitted code with syntax highlighting
+- Server Component (already async, can use `generateStaticParams`)
+- All components reuse existing UI primitives:
+  - `ScoreRing` - exists, Server Component
+  - `Badge` with variant="verdict" - exists, Server Component
+  - `CodeBlock` / `CodeBlockContent` - exists, Server Component (uses `use cache`)
+  - `DiffLine` - exists, Server Component
+  - Issues rendered inline with `Card` + `Badge` - Server Component
+- No new components needed
 
 ## Tech Stack
 
