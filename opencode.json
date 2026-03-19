@@ -6,7 +6,11 @@
 			"url": "https://mcp.context7.com/mcp"
 		},
 		"pencil": {
-			"command": ["pencil-mcp"],
+			"command": [
+				"/tmp/.mount_PencilS5g0im/resources/app.asar.unpacked/out/mcp-server-linux-x64",
+				"--app",
+				"desktop"
+			],
 			"enabled": true,
 			"type": "local"
 		}
