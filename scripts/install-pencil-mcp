@@ -1,0 +1,12 @@
+#!/bin/bash
+# install-pencil-mcp - Instala o script pencil-mcp em ~/.local/bin/
+
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DEST="$HOME/.local/bin/pencil-mcp"
+
+ln -sf "$SCRIPT_DIR/pencil-mcp" "$DEST"
+chmod +x "$DEST"
+
+echo "Installed pencil-mcp to $DEST"
