@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "@/db";
@@ -8,7 +9,7 @@ import {
 } from "@/db/queries";
 import { issues, submissions, suggestions } from "@/db/schema";
 import { analyzeCode } from "@/lib/ai/roast";
-import { supportedLanguageSchema } from "@/lib/ai/types";
+import { type RoastResult, supportedLanguageSchema } from "@/lib/ai/types";
 import { baseProcedure, createTRPCRouter } from "../init";
 
 export const appRouter = createTRPCRouter({
@@ -53,43 +54,81 @@ export const appRouter = createTRPCRouter({
 			.mutation(async ({ input }) => {
 				const { code, language, roastMode } = input;
 
-				const result = await analyzeCode(code, language, roastMode);
+				let result: RoastResult | undefined;
+				try {
+					result = await analyzeCode(code, language, roastMode);
+				} catch (error) {
+					throw new TRPCError({
+						code: "INTERNAL_SERVER_ERROR",
+						message: "Failed to analyze code",
+						cause: error,
+					});
+				}
+
+				if (!result) {
+					throw new TRPCError({
+						code: "INTERNAL_SERVER_ERROR",
+						message: "Failed to analyze code",
+					});
+				}
+
 				const lineCount = code.split("\n").length;
 
-				const [submission] = await db
-					.insert(submissions)
-					.values({
-						code,
-						language,
-						score: result.score,
-						verdict: result.verdict,
-						roastQuote: result.roastQuote,
-						lineCount,
-					})
-					.returning();
+				const [submission] = await db.transaction(async (tx) => {
+					const [sub] = await tx
+						.insert(submissions)
+						.values({
+							code,
+							language,
+							score: result.score,
+							verdict: result.verdict,
+							roastQuote: result.roastQuote,
+							lineCount,
+						})
+						.returning();
 
-				if (result.issues.length > 0) {
-					await db.insert(issues).values(
-						result.issues.map((issue) => ({
-							submissionId: submission.id,
-							title: issue.title,
-							description: issue.description,
-							severity: issue.severity,
-							lineNumber: issue.lineNumber,
-						})),
-					);
-				}
+					if (!sub) {
+						throw new TRPCError({
+							code: "INTERNAL_SERVER_ERROR",
+							message: "Failed to create submission",
+						});
+					}
 
-				if (result.suggestions.length > 0) {
-					await db.insert(suggestions).values(
-						result.suggestions.map((s) => ({
-							submissionId: submission.id,
-							originalCode: s.originalCode,
-							suggestedCode: s.suggestedCode,
-							explanation: s.explanation,
-						})),
-					);
-				}
+					const inserts = [];
+
+					if (result.issues.length > 0) {
+						inserts.push(
+							tx.insert(issues).values(
+								result.issues.map((issue) => ({
+									submissionId: sub.id,
+									title: issue.title,
+									description: issue.description,
+									severity: issue.severity,
+									lineNumber: issue.lineNumber,
+								})),
+							),
+						);
+					}
+
+					if (result.suggestions.length > 0) {
+						inserts.push(
+							tx.insert(suggestions).values(
+								result.suggestions.map((s) => ({
+									submissionId: sub.id,
+									originalCode: s.originalCode,
+									suggestedCode: s.suggestedCode,
+									explanation: s.explanation,
+								})),
+							),
+						);
+					}
+
+					if (inserts.length > 0) {
+						await Promise.all(inserts);
+					}
+
+					return [sub];
+				});
 
 				return { id: submission.id };
 			}),
@@ -97,21 +136,25 @@ export const appRouter = createTRPCRouter({
 		getById: baseProcedure
 			.input(z.object({ id: z.string().uuid() }))
 			.query(async ({ input }) => {
-				const submission = await db.query.submissions.findFirst({
-					where: eq(submissions.id, input.id),
-				});
+				const [submission, submissionIssues, submissionSuggestions] =
+					await Promise.all([
+						db.query.submissions.findFirst({
+							where: eq(submissions.id, input.id),
+						}),
+						db.query.issues.findMany({
+							where: eq(issues.submissionId, input.id),
+						}),
+						db.query.suggestions.findMany({
+							where: eq(suggestions.submissionId, input.id),
+						}),
+					]);
 
 				if (!submission) {
-					throw new Error("Submission not found");
+					throw new TRPCError({
+						code: "NOT_FOUND",
+						message: "Submission not found",
+					});
 				}
-
-				const submissionIssues = await db.query.issues.findMany({
-					where: eq(issues.submissionId, input.id),
-				});
-
-				const submissionSuggestions = await db.query.suggestions.findMany({
-					where: eq(suggestions.submissionId, input.id),
-				});
 
 				return {
 					...submission,
