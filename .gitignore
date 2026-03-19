@@ -42,3 +42,6 @@ next-env.d.ts
 
 # biome
 *.css
+
+# worktrees
+.worktrees/
