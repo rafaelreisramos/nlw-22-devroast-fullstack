@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CodeSection } from "@/components/code-section";
 import { HomeMetrics } from "@/components/home-metrics";
 import { ShameLeaderboardContent } from "@/components/shame-leaderboard-content";
@@ -36,11 +37,13 @@ export default function Home() {
 				<div className="flex flex-col gap-6">
 					<div className="flex items-center justify-between">
 						<SectionTitle>shame_leaderboard</SectionTitle>
-						<div className="rounded-sm border border-border-primary px-3 py-1.5">
-							<span className="font-mono text-xs text-text-secondary">
-								$ view_all &gt;&gt;
-							</span>
-						</div>
+						<Link href="/leaderboard">
+							<div className="rounded-sm border border-border-primary px-3 py-1.5">
+								<span className="font-mono text-xs text-text-secondary">
+									$ view_all &gt;&gt;
+								</span>
+							</div>
+						</Link>
 					</div>
 
 					<p className="font-mono text-sm text-text-tertiary">

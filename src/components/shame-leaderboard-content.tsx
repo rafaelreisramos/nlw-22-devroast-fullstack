@@ -1,4 +1,5 @@
 import { cacheLife } from "next/cache";
+import Link from "next/link";
 import { codeToHtml } from "shiki";
 import { CollapsibleCode } from "@/components/ui/collapsible-code";
 import {
@@ -67,10 +68,12 @@ async function ShameLeaderboardContent() {
 			</div>
 
 			<div className="flex justify-center pt-4">
-				<span className="font-mono text-xs text-text-tertiary">
-					showing top 3 of {totalCount.toLocaleString()} · view full leaderboard
-					&gt;&gt;
-				</span>
+				<Link href="/leaderboard">
+					<span className="font-mono text-xs text-text-tertiary">
+						showing top 3 of {totalCount.toLocaleString()} · view full
+						leaderboard &gt;&gt;
+					</span>
+				</Link>
 			</div>
 		</>
 	);
