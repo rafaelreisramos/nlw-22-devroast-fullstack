@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { TRPCReactProvider } from "@/trpc/client";
 import "./globals.css";
 
@@ -8,6 +9,14 @@ export const metadata: Metadata = {
 	description:
 		"Drop your code below and we'll rate it — brutally honest or full roast mode",
 };
+
+function LoadingFallback() {
+	return (
+		<div className="flex h-screen items-center justify-center">
+			<p className="font-mono text-text-secondary">loading...</p>
+		</div>
+	);
+}
 
 export default function RootLayout({
 	children,
@@ -35,7 +44,9 @@ export default function RootLayout({
 						</Link>
 					</div>
 				</nav>
-				<TRPCReactProvider>{children}</TRPCReactProvider>
+				<Suspense fallback={<LoadingFallback />}>
+					<TRPCReactProvider>{children}</TRPCReactProvider>
+				</Suspense>
 			</body>
 		</html>
 	);

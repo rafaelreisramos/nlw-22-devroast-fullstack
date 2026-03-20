@@ -9,6 +9,7 @@ const badgeVariants = tv({
 			warning: "text-accent-amber",
 			good: "text-accent-green",
 			verdict: "text-accent-red",
+			info: "text-text-primary",
 		},
 	},
 	defaultVariants: {
@@ -24,6 +25,7 @@ const dotVariants = tv({
 			warning: "bg-accent-amber",
 			good: "bg-accent-green",
 			verdict: "bg-accent-red",
+			info: "bg-text-primary",
 		},
 	},
 	defaultVariants: {
@@ -31,7 +33,7 @@ const dotVariants = tv({
 	},
 });
 
-type BadgeVariant = "critical" | "warning" | "good" | "verdict";
+type BadgeVariant = "critical" | "warning" | "good" | "verdict" | "info";
 
 export interface BadgeProps extends HTMLAttributes<HTMLDivElement> {
 	variant?: BadgeVariant;

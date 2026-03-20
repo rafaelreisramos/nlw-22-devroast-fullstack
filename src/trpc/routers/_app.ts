@@ -1,11 +1,15 @@
-import { sql } from "drizzle-orm";
+import { TRPCError } from "@trpc/server";
+import { eq, sql } from "drizzle-orm";
+import { z } from "zod";
 import { db } from "@/db";
 import {
 	getLeaderboardStats,
 	getShameLeaderboard,
 	getTotalRoastsCount,
 } from "@/db/queries";
-import { submissions } from "@/db/schema";
+import { issues, submissions, suggestions } from "@/db/schema";
+import { analyzeCode } from "@/lib/ai/roast";
+import { type RoastResult, supportedLanguageSchema } from "@/lib/ai/types";
 import { baseProcedure, createTRPCRouter } from "../init";
 
 export const appRouter = createTRPCRouter({
@@ -37,6 +41,127 @@ export const appRouter = createTRPCRouter({
 		getLeaderboardStats: baseProcedure.query(async () => {
 			return getLeaderboardStats();
 		}),
+	}),
+	roast: createTRPCRouter({
+		submit: baseProcedure
+			.input(
+				z.object({
+					code: z.string().min(1).max(2000),
+					language: supportedLanguageSchema,
+					roastMode: z.boolean(),
+				}),
+			)
+			.mutation(async ({ input }) => {
+				const { code, language, roastMode } = input;
+
+				let result: RoastResult | undefined;
+				try {
+					result = await analyzeCode(code, language, roastMode);
+				} catch (error) {
+					throw new TRPCError({
+						code: "INTERNAL_SERVER_ERROR",
+						message: "Failed to analyze code",
+						cause: error,
+					});
+				}
+
+				if (!result) {
+					throw new TRPCError({
+						code: "INTERNAL_SERVER_ERROR",
+						message: "Failed to analyze code",
+					});
+				}
+
+				const lineCount = code.split("\n").length;
+
+				const [submission] = await db.transaction(async (tx) => {
+					const [sub] = await tx
+						.insert(submissions)
+						.values({
+							code,
+							language,
+							score: result.score,
+							verdict: result.verdict,
+							roastQuote: result.roastQuote,
+							lineCount,
+						})
+						.returning();
+
+					if (!sub) {
+						throw new TRPCError({
+							code: "INTERNAL_SERVER_ERROR",
+							message: "Failed to create submission",
+						});
+					}
+
+					const inserts = [];
+
+					if (result.issues.length > 0) {
+						inserts.push(
+							tx.insert(issues).values(
+								result.issues.map((issue) => ({
+									submissionId: sub.id,
+									title: issue.title,
+									description: issue.description,
+									severity: issue.severity,
+									lineNumber: issue.lineNumber,
+								})),
+							),
+						);
+					}
+
+					if (result.suggestions.length > 0) {
+						inserts.push(
+							tx.insert(suggestions).values(
+								result.suggestions.map((s) => ({
+									submissionId: sub.id,
+									originalCode: s.originalCode,
+									suggestedCode: s.suggestedCode,
+									explanation: s.explanation,
+								})),
+							),
+						);
+					}
+
+					if (inserts.length > 0) {
+						await Promise.all(inserts);
+					}
+
+					return [sub];
+				});
+
+				return { id: submission.id };
+			}),
+
+		getById: baseProcedure
+			.input(z.object({ id: z.string().uuid() }))
+			.query(async ({ input }) => {
+				const [submission, submissionIssues, submissionSuggestions] =
+					await Promise.all([
+						db.query.submissions.findFirst({
+							where: eq(submissions.id, input.id),
+						}),
+						db.query.issues.findMany({
+							where: eq(issues.submissionId, input.id),
+						}),
+						db.query.suggestions.findMany({
+							where: eq(suggestions.submissionId, input.id),
+						}),
+					]);
+
+				if (!submission) {
+					throw new TRPCError({
+						code: "NOT_FOUND",
+						message: "Submission not found",
+					});
+				}
+
+				return {
+					...submission,
+					issues: submissionIssues,
+					suggestions: submissionSuggestions,
+				};
+			}),
 	}),
 });
 

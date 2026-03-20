@@ -2,7 +2,7 @@
 
 import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { cache } from "react";
-import { createTRPCContext } from "./init";
+import { createCallerFactory, createTRPCContext } from "./init";
 import { makeQueryClient } from "./query-client";
 import { appRouter } from "./routers/_app";
 
@@ -25,3 +25,5 @@ export function prefetch<
 	const queryClient = getQueryClient();
 	void queryClient.prefetchQuery(queryOptions);
 }
+
+export const caller = createCallerFactory(appRouter)(createTRPCContext);
