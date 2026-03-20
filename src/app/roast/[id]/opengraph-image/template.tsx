@@ -52,7 +52,7 @@ export function OpenGraphImageTemplate(data: OpenGraphData) {
 						lineHeight: 1,
 					}}
 				>
-					{score}
+					{Math.round(score)}
 				</span>
 				<span
 					style={{
@@ -94,22 +94,24 @@ export function OpenGraphImageTemplate(data: OpenGraphData) {
 			</span>
 
 			{/* Quote */}
-			<div
-				style={{
-					maxWidth: "100%",
-					textAlign: "center",
-				}}
-			>
-				<span
+			{roastQuote && (
+				<div
 					style={{
-						color: "#e5e5e5",
-						fontSize: "22px",
-						lineHeight: 1.5,
+						maxWidth: "100%",
+						textAlign: "center",
 					}}
 				>
-					"{roastQuote}"
-				</span>
-			</div>
+					<span
+						style={{
+							color: "#e5e5e5",
+							fontSize: "22px",
+							lineHeight: 1.5,
+						}}
+					>
+						"{roastQuote}"
+					</span>
+				</div>
+			)}
 		</div>
 	);
 }
