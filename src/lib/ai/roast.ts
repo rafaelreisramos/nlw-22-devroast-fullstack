@@ -50,7 +50,7 @@ export async function analyzeCode(
 	language: SupportedLanguage,
 	roastMode: boolean,
 ) {
-	const model = google("gemini-2.0-flash");
+	const model = google("gemini-2.5-flash");
 	const prompt = buildPrompt(code, language, roastMode);
 
 	const { text } = await generateText({

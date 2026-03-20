@@ -1,13 +1,37 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { CodeBlock } from "@/components/ui/code-block";
+import { CodeBlockContent } from "@/components/ui/code-block";
 import { DiffLine } from "@/components/ui/diff-line";
 import { ScoreRing } from "@/components/ui/score-ring";
 import { SectionTitle } from "@/components/ui/section-title";
-import { useTRPC } from "@/trpc/client";
+
+type Submission = {
+	id: string;
+	code: string;
+	language: string;
+	score: number;
+	verdict: string;
+	roastQuote: string;
+	lineCount: number;
+	createdAt: Date;
+};
+
+type Issue = {
+	id: string;
+	title: string;
+	description: string;
+	severity: string;
+	lineNumber: number | null;
+};
+
+type Suggestion = {
+	id: string;
+	originalCode: string;
+	suggestedCode: string;
+	explanation: string;
+};
 
 function formatVerdict(verdict: string): string {
 	return verdict.replace(/_/g, " ");
@@ -15,32 +39,22 @@ function formatVerdict(verdict: string): string {
 
 function mapSeverity(severity: string) {
 	if (severity === "error") return "critical";
-	return severity as "critical" | "warning" | "good" | "verdict";
+	if (severity === "info") return "info";
+	return severity as "critical" | "warning" | "good" | "verdict" | "info";
 }
 
-export function RoastResultsContent({ id }: { id: string }) {
-	const trpc = useTRPC();
-	const { data: submission, isLoading } = useQuery(
-		trpc.roast.getById.queryOptions({ id }),
-	);
-
-	if (isLoading) {
-		return (
-			<div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center">
-				<p className="font-mono text-text-secondary">loading...</p>
-			</div>
-		);
-	}
-
-	if (!submission) {
-		return (
-			<div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center">
-				<p className="font-mono text-text-secondary">submission not found</p>
-			</div>
-		);
-	}
-
-	const diffLines = submission.suggestions.flatMap((s) => [
+export function RoastResultsContent({
+	submission,
+	issues,
+	suggestions,
+	codeHtml,
+}: {
+	submission: Submission;
+	issues: Issue[];
+	suggestions: Suggestion[];
+	codeHtml: string;
+}) {
+	const diffLines = suggestions.flatMap((s) => [
 		{ type: "removed" as const, prefix: "-", content: s.originalCode },
 		{ type: "added" as const, prefix: "+", content: s.suggestedCode },
 	]);
@@ -48,8 +62,8 @@ export function RoastResultsContent({ id }: { id: string }) {
 	return (
 		<main className="flex min-h-[calc(100vh-3.5rem)] flex-col items-center bg-bg-page px-20 py-10">
 			<div className="flex w-full max-w-5xl flex-col gap-10">
-				<div className="flex items-center justify-center gap-12">
-					<ScoreRing score={submission.score} />
+				<div className="flex items-center gap-12">
+					<ScoreRing score={submission.score} className="shrink-0" />
 
 					<div className="flex flex-col gap-4">
 						<Badge variant="verdict">
@@ -78,7 +92,11 @@ export function RoastResultsContent({ id }: { id: string }) {
 					<SectionTitle>your_submission</SectionTitle>
 
 					<div className="overflow-hidden rounded-sm border border-border-primary bg-bg-input">
-						<CodeBlock code={submission.code} language={submission.language} />
+						<CodeBlockContent
+							code={submission.code}
+							language={submission.language}
+							html={codeHtml}
+						/>
 					</div>
 				</div>
 
@@ -88,7 +106,7 @@ export function RoastResultsContent({ id }: { id: string }) {
 					<SectionTitle>detailed_analysis</SectionTitle>
 
 					<div className="grid grid-cols-2 gap-5">
-						{submission.issues.map((issue) => (
+						{issues.map((issue) => (
 							<Card key={issue.id}>
 								<Badge variant={mapSeverity(issue.severity)}>
 									{issue.severity}
@@ -100,7 +118,7 @@ export function RoastResultsContent({ id }: { id: string }) {
 					</div>
 				</div>
 
-				{submission.suggestions.length > 0 && (
+				{suggestions.length > 0 && (
 					<>
 						<div className="h-px w-full bg-border-primary" />
 

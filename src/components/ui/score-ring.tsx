@@ -18,16 +18,20 @@ function ScoreRing({
 	const radius = 70;
 	const circumference = 2 * Math.PI * radius;
 	const strokeDashoffset = circumference * (1 - percentage);
-
+	const centerX = size / 2;
+	const centerY = size / 2;
 	const gradientId = `score-ring-gradient-${score}-${maxScore}`;
+
+	const getScoreColor = () => {
+		if (percentage <= 0.35) return "text-accent-red";
+		if (percentage <= 0.65) return "text-accent-amber";
+		return "text-accent-green";
+	};
 
 	return (
 		<div
-			className={twMerge(
-				"relative inline-flex items-center justify-center",
-				className,
-			)}
-			style={{ width: size, height: size }}
+			className={twMerge("relative shrink-0", className)}
+			style={{ width: `${size}px`, height: `${size}px` }}
 			{...props}
 		>
 			<svg
@@ -40,21 +44,22 @@ function ScoreRing({
 				<defs>
 					<linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
 						<stop offset="0%" stopColor="#10b981" />
+						<stop offset="35%" stopColor="#10b981" />
 						<stop offset="35%" stopColor="#f59e0b" />
-						<stop offset="36%" stopColor="transparent" />
+						<stop offset="100%" stopColor="#ef4444" />
 					</linearGradient>
 				</defs>
 				<circle
-					cx={size / 2}
-					cy={size / 2}
+					cx={centerX}
+					cy={centerY}
 					r={radius}
 					fill="none"
 					stroke="var(--color-border-primary)"
 					strokeWidth={4}
 				/>
 				<circle
-					cx={size / 2}
-					cy={size / 2}
+					cx={centerX}
+					cy={centerY}
 					r={radius}
 					fill="none"
 					stroke={`url(#${gradientId})`}
@@ -67,11 +72,13 @@ function ScoreRing({
 					}}
 				/>
 			</svg>
-			<div className="flex items-baseline gap-0.5">
-				<span className="font-mono text-5xl font-bold text-text-primary leading-none">
+			<div className="absolute inset-0 flex flex-col items-center justify-center">
+				<span
+					className={`font-mono text-5xl font-bold leading-none ${getScoreColor()}`}
+				>
 					{score.toFixed(1)}
 				</span>
-				<span className="font-mono text-base text-text-tertiary leading-none">
+				<span className="font-mono text-base leading-none text-text-tertiary">
 					/{maxScore}
 				</span>
 			</div>

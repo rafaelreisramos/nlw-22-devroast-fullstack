@@ -1,8 +1,29 @@
+import { eq } from "drizzle-orm";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { codeToHtml } from "shiki";
 import { RoastResultsContent } from "@/components/roast-results-content";
+import { db } from "@/db";
+import { issues, submissions, suggestions } from "@/db/schema";
 
-export async function generateMetadata(_: { params: Promise<{ id: string }> }) {
-	return { title: "Roast Result | DevRoast" };
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ id: string }>;
+}) {
+	const { id } = await params;
+	const submission = await db.query.submissions.findFirst({
+		where: eq(submissions.id, id),
+	});
+
+	if (!submission) {
+		return { title: "Roast Not Found | DevRoast" };
+	}
+
+	return {
+		title: `Roast Result (${submission.score}/10) | DevRoast`,
+		description: submission.roastQuote,
+	};
 }
 
 export default async function RoastResultsPage({
@@ -12,6 +33,27 @@ export default async function RoastResultsPage({
 }) {
 	const { id } = await params;
 
+	const submission = await db.query.submissions.findFirst({
+		where: eq(submissions.id, id),
+	});
+
+	if (!submission) {
+		notFound();
+	}
+
+	const submissionIssues = await db.query.issues.findMany({
+		where: eq(issues.submissionId, id),
+	});
+
+	const submissionSuggestions = await db.query.suggestions.findMany({
+		where: eq(suggestions.submissionId, id),
+	});
+
+	const codeHtml = await codeToHtml(submission.code, {
+		lang: submission.language,
+		theme: "vesper",
+	});
+
 	return (
 		<Suspense
 			fallback={
@@ -20,7 +62,12 @@ export default async function RoastResultsPage({
 				</div>
 			}
 		>
-			<RoastResultsContent id={id} />
+			<RoastResultsContent
+				submission={submission}
+				issues={submissionIssues}
+				suggestions={submissionSuggestions}
+				codeHtml={codeHtml}
+			/>
 		</Suspense>
 	);
 }
