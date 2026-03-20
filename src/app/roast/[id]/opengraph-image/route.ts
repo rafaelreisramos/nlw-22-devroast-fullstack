@@ -3,8 +3,6 @@ import { generateOpenGraphImage } from "@/lib/takumi";
 import { createCallerFactory } from "@/trpc/init";
 import { appRouter } from "@/trpc/routers/_app";
 
-export const dynamic = "force-dynamic";
-
 const createCaller = createCallerFactory(appRouter);
 
 interface SubmissionPreview {
