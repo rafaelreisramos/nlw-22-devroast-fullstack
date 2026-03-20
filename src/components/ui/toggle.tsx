@@ -23,11 +23,11 @@ export function Toggle({
 			onCheckedChange={onCheckedChange}
 			disabled={disabled}
 			className={twMerge(
-				"relative inline-flex h-6 w-10 items-center rounded-lg p-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-checked:bg-accent-green data-unchecked:bg-border-primary",
+				"relative inline-flex h-[22px] w-10 items-center rounded-[11px] p-[3px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-checked:bg-accent-green data-unchecked:bg-border-primary",
 				className,
 			)}
 		>
-			<Switch.Thumb className="pointer-events-none block h-4 w-4 rounded-full bg-text-secondary shadow-sm transition-transform data-checked:translate-x-4.5 data-unchecked:translate-x-0" />
+			<Switch.Thumb className="pointer-events-none block h-4 w-4 rounded-full bg-text-primary shadow-sm transition-transform data-checked:translate-x-4.5 data-unchecked:translate-x-0" />
 		</Switch.Root>
 	);
 }
