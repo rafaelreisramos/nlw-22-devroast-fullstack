@@ -434,3 +434,88 @@ a cor do texto do score dentro do scroe-ring deveria ter a mesma cor do stop do 
 ```
 No component badge, quando a variant não é nenhuma conhecida, usar uma nova variant chamada info que usar a mesma cor dos textos da session-title.
 ```
+
+---
+
+# Prompt Session - OpenGraph Image for Roast Results
+
+Data: 2026-03-20
+
+---
+
+## Brainstorming Prompts
+
+### 1. Feature Request
+```
+Agora eu quero que os links compartilháveis dos resultados de um roast tenham uma imagem opengraph anexada ao embed de forma automática. Use o mcp do Pencil para consultar o frame selecionado no app desktop do pencil e use para o design. Para o design use somente as fontes do global.css para mono e sans. Eu quero usar a ferramenta Takumi para a geração desta imagem (https://github.com/kane50613/takumi) (https://takumi.kane.tw/docs/migration/image-response)
+```
+
+---
+
+### 2. Design Reference
+```
+O link da imagem seria `roast/[id]/opengraph-image`
+```
+
+---
+
+### 3. Data Fetching Approach
+```
+Na realidade a abordagem 2. Com route separada em `roast/[id]/opengraph-image/route.ts
+```
+
+---
+
+### 4. Cache Strategy
+```
+Gera sob demanda com cache no browser. Use o tRPC para a chamada para obter os dados e não diretamente no banco.
+```
+
+---
+
+### 5. Font Selection
+```
+Ajuste para as fontes Geist. O tamanho está correto.
+```
+
+---
+
+### 6. Implementation Approach
+```
+A proposta 1 mas o cache de 1 ano.
+```
+
+---
+
+### 7. Plan Approval
+```
+plano aprovado.
+```
+
+---
+
+### 8. Execution Approach
+```
+1
+```
+
+---
+
+### 9. Takumi Fix
+```
+Verifique novamente a documentação do takumi e eventuais issues do github para verificar se há solução. Não use o o vercel/og. Vamos fazer funcionar como o Takumi
+```
+
+---
+
+### 10. Lockfile Cleanup
+```
+remova as instalações de yarn e pnpm que foram feitas.
+```
+
+---
+
+### 11. Prompt Documentation
+```
+agora adicione ao final do arquivo @PROMPTS.md todos os prompts desta sessão.
+```
