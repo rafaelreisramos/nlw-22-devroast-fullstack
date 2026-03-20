@@ -301,3 +301,136 @@ parece que o loading não está sendo aplicado. Continua aplicando o Leaderboard
 ```
 para representar fielmente a página falta um skeleton no loading.tsx para representar as informações de submissions e avg_score
 ```
+
+---
+
+# Prompt Session - Code Roast Feature
+
+Data: 2026-03-20
+
+---
+
+## Brainstorming e Design
+
+### Início do Brainstorming
+```
+Vamos criar a feature mais importante da aplicação, ou seja, permitir que o usuário carregue trechos de código e veja a análise feita por I.A.. Coisas que vamos levar em conta:
+1. Deve haver a opção de roast mode para uma análise mais sarcásica como temos no layout.
+2. Não vamos implementar a parte de share roast por agora.
+```
+
+---
+
+### Provider de IA
+```
+Qual provedor de IA você pretende usar?
+A) OpenAI (GPT-4o)
+B) Claude (Anthropic)
+C) Gemini (Google)
+D) Outro (qual?)
+```
+**Resposta:** C - Gemini
+
+---
+
+### Comportamento do Modo
+```
+Qual comportamento você quer para cada modo?
+A) Apenas "roast mode" (sarcástico) - o toggle ativa/desativa o humor, mas a análise técnica sempre acontece
+B) Dois modos distintos: "serious" (análise técnica sóbria) vs "roast" (sarcástica)
+C) Outro enfoque?
+```
+**Resposta:** A - Apenas roast mode ativa/desativa o humor
+
+---
+
+### Estrutura da Chamada à API
+```
+Como você quer estruturar a chamada ao Gemini?
+A) Prompt único com instrução para retornar JSON estruturado
+B) Múltiplas chamadas: uma para análise técnica, outra para o "roast quote"
+C) Outra abordagem?
+```
+**Resposta:** A - Prompt único com JSON
+
+---
+
+### Fluxo de Navegação
+```
+Após submeter, qual deve ser o fluxo de navegação?
+A) Redirecionar para página de resultado (/roast/[id])
+B) Mostrar resultado inline abaixo do editor (mesma página)
+C) Modal/overlay com resultado
+```
+**Resposta:** A - Redirecionar
+
+---
+
+### Uso de Vercel AI SDK
+```
+Use o api sdk da vercel.
+```
+
+---
+
+### Visual Companion
+```
+Para a parte visual da aplicação você pode usar o mcp do Pencil e consultar o layout das páginas selecionadas no app desktop do Pencil para submissão e resultado dos roasts.
+```
+
+---
+
+## Correções e Ajustes
+
+### Modelo do Gemini
+```
+change gemini model to Gemini 3.1 Flash-Lite
+```
+
+---
+
+## Componentes e Layout
+
+### ScoreRing e Veredito
+```
+Verifique se você está usando o @src/components/ui/score-ring.tsx para o score. O score do score-ring está fora do circulo e o espaçamento entre o score-ring e o texto não está correto conforme o layout do pencil.
+```
+
+---
+
+### Badge Variant
+```
+No component badge, quando a variant não é nenhuma conhecida, usar uma nova variant chamada info que usar a mesma cor dos textos da session-title.
+```
+
+---
+
+## Finalização
+
+### Criar PR
+```
+Ao invés de fazer o commit, crie uma branch para esta feature e faça um pull request usando a cli do Github instalada.
+```
+
+---
+
+## Correções Visuais
+
+### Gradiente do ScoreRing
+```
+parece que agora está correto. Agora poderia voltar o gradiente do score-ring?
+```
+
+---
+
+### Cor do ScoreRing
+```
+a cor do texto do score dentro do scroe-ring deveria ter a mesma cor do stop do gradiente, por exemplo 1.0 é vermelho e 10.0 é verde
+```
+
+---
+
+### Info Variant no Badge
+```
+No component badge, quando a variant não é nenhuma conhecida, usar uma nova variant chamada info que usar a mesma cor dos textos da session-title.
+```
