@@ -21,8 +21,17 @@ export async function generateMetadata({
 	}
 
 	return {
-		title: `Roast Result (${submission.score}/10) | DevRoast`,
+		title: `${submission.score}/10 - ${submission.language} | DevRoast`,
 		description: submission.roastQuote,
+		twitter: {
+			card: "summary_large_image",
+			images: [`/roast/${submission.id}/opengraph-image`],
+		},
+		openGraph: {
+			title: `${submission.score}/10 - ${submission.language} | DevRoast`,
+			description: submission.roastQuote,
+			images: [{ url: `/roast/${submission.id}/opengraph-image` }],
+		},
 	};
 }
 
