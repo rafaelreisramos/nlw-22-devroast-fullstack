@@ -2,7 +2,7 @@
 
 ## Problema
 
-O Pencil AppImage monta em um diretório temporário dinâmico (`/tmp/.mount_Pencil*`) cada vez que é executado, making the MCP server path unpredictable.
+O Pencil AppImage monta em um diretório temporário dinâmico (`/tmp/.mount_Pencil*`) cada vez que é executado, tornando o caminho do servidor MCP imprevisível.
 
 ## Solução
 
