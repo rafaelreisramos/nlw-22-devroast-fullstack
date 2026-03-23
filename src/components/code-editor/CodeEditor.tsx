@@ -171,9 +171,12 @@ export function CodeEditor({
 			>
 				<div className="flex">
 					<div className="flex w-10 flex-none flex-col gap-1.5 border-r border-border-primary bg-bg-surface px-2.5 py-3 text-right font-mono text-xs text-text-tertiary">
-						{code.split("\n").map((_, i) => (
-							<span key={i}>{i + 1}</span>
-						))}
+						{Array.from(
+							{ length: Math.max(code.split("\n").length, 16) },
+							(_, i) => (
+								<span key={i}>{i + 1}</span>
+							),
+						)}
 					</div>
 					<div className="relative flex-1">
 						<div
